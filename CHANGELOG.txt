@@ -1,3 +1,5 @@
 NOTE: currently releases contain libnethack.so for each ABI. Ideally later we will have seperate APKs for each like most modern apps. All of the releases should be considered beta quality as the changes were massive and I have not been able to test it all on my own.
 
-- fixed a major bug that prevented the app from being launched on newer phones if the app wasn't already installed before and given read/write permissions.
+- changed package id so that this app can be installed alongside the original app.
+    - this does unfortunately mean your saves won't carry over, but the old app with the saves will still be installed when you install this, so you wont actually lose any data and can just play using that app instead.
+- fixed a bug that would cause the save and discard buttons in the options file editing window to be off-screen
