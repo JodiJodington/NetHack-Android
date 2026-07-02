@@ -1,4 +1,4 @@
-/* NetHack 5.0	cmd.c	$NHDT-Date: 1762680996 2025/11/09 01:36:36 $  $NHDT-Branch: NetHack-3.7 $:$NHDT-Revision: 1.755 $ */
+/* NetHack 5.0	cmd.c	$NHDT-Date: 1781973043 2026/06/20 16:30:43 $  $NHDT-Branch: NetHack-5.0 $:$NHDT-Revision: 1.772 $ */
 /* Copyright (c) Stichting Mathematisch Centrum, Amsterdam, 1985. */
 /*-Copyright (c) Robert Patrick Rankin, 2013. */
 /* NetHack may be freely redistributed.  See license for details. */
@@ -2497,7 +2497,8 @@ handler_change_autocompletions(void)
             if (strlen(ec->ef_txt) < 2)
                 continue;
 
-            Sprintf(buf, "%s", ec->ef_txt);
+            /* switched to Snprintf to eliminate -Wformat-overflow warning */
+            Snprintf(buf, sizeof buf, "%s", ec->ef_txt);
 
             for (j = 0; j < n; ++j) {
                 if (ec == &extcmdlist[(picks[j].item.a_int - 1)]) {
