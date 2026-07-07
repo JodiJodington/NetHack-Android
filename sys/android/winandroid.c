@@ -172,34 +172,14 @@ static int msghistory_idx;
 static int msghistory_idx0;
 
 extern const char *status_fieldfmt[MAXBLSTATS];
-// Need to separate conditions in order to color them properly
-enum bl_conditions {
-    BL_COND_STONE,
-    BL_COND_SLIME,
-    BL_COND_STRNGL,
-    BL_COND_FOODPOIS,
-    BL_COND_TERMILL,
-    BL_COND_BLIND,
-    BL_COND_DEAF,
-    BL_COND_STUN,
-    BL_COND_CONF,
-    BL_COND_HALLU,
-    BL_COND_LEV,
-    BL_COND_FLY,
-    BL_COND_RIDE
-};
-
 #define MAXBLCONDITIONS 13
 extern char *status_vals[MAXBLSTATS];
 static int status_colors[MAXBLSTATS];
 extern boolean status_activefields[MAXBLSTATS];
+extern const struct conditions_t conditions[CONDITION_COUNT];
 static unsigned long* cond_hilites;
 static unsigned long active_conditions;
-static const char* cond_names[] = {
-    "Bare",  "Blind",  "Busy", "Conf",   "Deaf",    "Iron",   "Fly",  "FoodPois", "Glow",  "Grab",
-    "Hallu", "Held",   "Icy",  "InLava", "Lev",     "Parlyz", "Ride", "Zzz",      "Slime", "Slip",
-    "Stone", "Strngl", "Stun", "Submrg", "TermIll", "Teth",   "Trap", "Out",      "WLegs", "UHold",
-};
+
 
 //____________________________________________________________________________________
 //
@@ -986,14 +966,15 @@ int get_condition_attr(int cond_mask)
     return attr;
 }
 
-void print_conditions(const char** names)
+void print_conditions(void)
 {
     int i;
-    for(i = 0; i < MAXBLCONDITIONS; i++) {
+    for(i = 0; i < CONDITION_COUNT; i++) {
         int cond_mask = 1 << i;
         if(active_conditions & cond_mask)
         {
-            const char* name = names[i];
+            // TODO: make the size of the text customizable
+            const char* name = conditions[i].text[0];
             int color = get_condition_color(cond_mask);
             int attr = get_condition_attr(cond_mask);
             //debuglog("cond '%s' active. col=%s attr=%x", name, colname(color), attr);
@@ -1031,7 +1012,7 @@ void print_status_field(int idx, boolean first_field)
 
     if(idx == BL_CONDITION)
     {
-        print_conditions(cond_names);
+        print_conditions();
     }
     else
     {
